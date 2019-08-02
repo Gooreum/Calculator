@@ -1,4 +1,4 @@
-package com.example.goo.calculator.Repository;
+package com.example.goo.calculator.repository;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
