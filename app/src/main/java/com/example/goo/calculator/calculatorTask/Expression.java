@@ -1,15 +1,6 @@
 package com.example.goo.calculator.calculatorTask;
 
-/*
-import net.objecthunter.exp4j.ValidationResult;
-import net.objecthunter.exp4j.function.Function;
-import net.objecthunter.exp4j.operator.Operator;
-import net.objecthunter.exp4j.tokenizer.FunctionToken;
-import net.objecthunter.exp4j.tokenizer.NumberToken;
-import net.objecthunter.exp4j.tokenizer.OperatorToken;
-import net.objecthunter.exp4j.tokenizer.Token;
-import net.objecthunter.exp4j.tokenizer.VariableToken;
-*/
+
 
 import com.example.goo.calculator.calculatorTask.function.Function;
 import com.example.goo.calculator.calculatorTask.operator.Operator;
@@ -163,11 +154,12 @@ public class Expression {
                     /* pop the operands and push the result of the operation */
                     BigDecimal rightArg = output.pop();
                     BigDecimal leftArg = output.pop();
-                    output.push(BigDecimal.valueOf(op.getOperator().apply(leftArg.doubleValue(), rightArg.doubleValue())));
+                   // output.push(BigDecimal.valueOf(op.getOperator().apply(leftArg.doubleValue(), rightArg.doubleValue())));
+                    output.push(op.getOperator().apply(leftArg, rightArg));
                 } else if (op.getOperator().getNumOperands() == 1) {
                     /* pop the operand and push the result of the operation */
                     BigDecimal arg = output.pop();
-                    output.push(BigDecimal.valueOf(op.getOperator().apply(arg.doubleValue())));
+                    output.push(op.getOperator().apply(arg));
                 }
             } else if (t.getType() == Token.TOKEN_FUNCTION) {
                 FunctionToken func = (FunctionToken) t;

@@ -18,11 +18,7 @@ import com.example.goo.calculator.calculatorTask.ExpressionBuilder;
 import com.example.goo.calculator.model.CalculatorModel;
 import com.example.goo.calculator.viewModel.CalculatorViewModel;
 import com.example.goo.calculator.R;
-/*
 
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
-*/
 
 import java.math.BigDecimal;
 
@@ -57,10 +53,8 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     private Button btnDiv;
     private Button btnDel;
     private Button btnAllClear;
-    private Button btnbra;
     private Button btn100;
     private Button btnEqual;
-    private Button btnSing;
     private Button btnDot;
 
 
@@ -93,11 +87,10 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                 if (calculatorModel != null) {
 
                     values = new StringBuffer(calculatorModel.getValue().toString());
-                    resultValue = new StringBuffer(calculatorModel.getValue().toString());
+                    resultValue = new StringBuffer(calculatorModel.getResult().toString());
 
                     isNumber = calculatorModel.isNumber();
                     lastDot = calculatorModel.isLastDot();
-
 
                     Log.d(TAG, "isNumber " + isNumber);
                     Log.d(TAG, "lastDot " + lastDot);
@@ -133,7 +126,6 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
         btnDiv = v.findViewById(R.id.btnDiv);
         btnDel = v.findViewById(R.id.btnDel);
         btnAllClear = v.findViewById(R.id.btnAllClear);
-        //  butsing = v.findViewById(R.id.butsin);
         btnDel = v.findViewById(R.id.btnDel);
         btnEqual = v.findViewById(R.id.btnEqual);
         btnDot = v.findViewById(R.id.btnDot);
@@ -158,7 +150,6 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
         btnDiv.setOnClickListener(this);
         btnDel.setOnClickListener(this);
         btnAllClear.setOnClickListener(this);
-        //  butsing = v.findViewById(R.id.butsin);
         btnDel.setOnClickListener(this);
         btnEqual.setOnClickListener(this);
         btnDot.setOnClickListener(this);
@@ -178,9 +169,12 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.btn1:
+
                 append("1");
 
                 updateCalculatorModelIsNumber(true);
+
+
                 break;
 
             case R.id.btn2:
@@ -232,8 +226,15 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.btn100:
-                if (!isEmpty() && isNumber)
-                    append("%");
+                if (!isEmpty()) {
+                    if (endsWithOperatore()) {
+                        replace("%");
+                    } else {
+                        append("%");
+                    }
+                }
+                updateCalculatorModelIsNumber(false);
+                updateCalculatorModelIsDot(false);
 
                 break;
 
@@ -247,7 +248,6 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                 }
                 updateCalculatorModelIsNumber(false);
                 updateCalculatorModelIsDot(false);
-
 
                 break;
 
@@ -300,12 +300,7 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                     updateCalculatorModelIsNumber(false);
                     updateCalculatorModelIsDot(true);
 
-                } else if (isEmpty()) {
-                    append("0.");
-                    updateCalculatorModelIsNumber(false);
-                    updateCalculatorModelIsDot(true);
-
-                } else if (endsWithOperatore()) {
+                } else if (isEmpty() || endsWithOperatore()) {
                     append("0.");
                     updateCalculatorModelIsNumber(false);
                     updateCalculatorModelIsDot(true);
@@ -341,7 +336,7 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
 
     //연산자로 끝나느지 확인하기
     private boolean endsWithOperatore() {
-        return getinput().endsWith("+") || getinput().endsWith("-") || getinput().endsWith("\u00F7") || getinput().endsWith("x");
+        return getinput().endsWith("+") || getinput().endsWith("-") || getinput().endsWith("\u00F7") || getinput().endsWith("x") || getinput().endsWith("%");
     }
 
     //
@@ -354,6 +349,7 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
 
     //연산 클리어
     private void clear() {
+
         updateCalculatorModelIsNumber(false);
         updateCalculatorModelIsDot(false);
 
@@ -366,8 +362,11 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     private void append(String str) {
         values.append(str);
 
-        calcule(false);
+        if (!endsWithOperatore()) {
+            calcule(false);
+        }
         updateCalculatorModelValues(values.toString(), resultValue.toString());
+
 
         Log.e(TAG, "CalculatorModel: " + calculatorViewModel.getAllValues().getValue().getValue().toString());
 
@@ -378,11 +377,15 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
 
         if (!isEmpty()) {
             if (getinput().endsWith(".")) {
+
                 updateCalculatorModelIsDot(false);
+                updateCalculatorModelIsNumber(true);
             }
+
             values.delete(getinput().length() - 1, getinput().length());
             updateCalculatorModelValues(values.toString(), resultValue.toString());
             calcule(false);
+
         } else clear();
 
     }
@@ -403,41 +406,66 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
         String input = getinput();
         try {
             if (!isEmpty() && !endsWithOperatore()) {
+
                 if (input.contains("x")) {
+
                     input = input.replaceAll("x", "*");
+
                 }
 
                 if (input.contains("\u00F7")) {
+
                     input = input.replaceAll("\u00F7", "/");
+
                 }
+
                 Expression expression = new ExpressionBuilder(input).build();
-                BigDecimal result = expression.evaluate();
+                BigDecimal result = expression.evaluate().stripTrailingZeros();
+
+                if (result.compareTo(BigDecimal.ZERO) == 0) {
+
+                    result = BigDecimal.valueOf(0);
+
+                }
 
                 if (isequlclick) {
 
                     values.delete(0, values.length());
-                    values.append(result);
+                    values.append(result.toPlainString());
 
                     resultValue.delete(0, resultValue.length());
                     resultValue.append("");
-                    updateCalculatorModelIsNumber(true);
-                    updateCalculatorModelIsDot(true);
+
+                    updateCalculatorModelValues(values.toString(), resultValue.toString());
+
+                    if (!result.toPlainString().contains(".")) {
+                        updateCalculatorModelIsNumber(true);
+                        updateCalculatorModelIsDot(false);
+
+                    } else if (result.toPlainString().contains(".")) {
+                        updateCalculatorModelIsNumber(true);
+                        updateCalculatorModelIsDot(true);
+
+                    } else {
+                        updateCalculatorModelIsNumber(isNumber);
+                        updateCalculatorModelIsDot(lastDot);
+                    }
+
 
                 } else {
 
                     resultValue.delete(0, resultValue.length());
-                    resultValue.append(result);
-
+                    resultValue.append(result.toPlainString());
+                    updateCalculatorModelValues(values.toString(), resultValue.toString());
                 }
 
 
             } else {
+
                 resultValue.delete(0, resultValue.length());
                 resultValue.append("");
-
+                updateCalculatorModelValues(values.toString(), resultValue.toString());
             }
-            updateCalculatorModelValues(values.toString(), resultValue.toString());
-
 
         } catch (Exception e) {
 

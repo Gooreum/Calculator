@@ -20,14 +20,15 @@ public class ShuntingYard {
 
     /**
      * Convert a Set of tokens from infix to reverse polish notation
-     * @param expression the expression to convert
+     *
+     * @param expression    the expression to convert
      * @param userFunctions the custom functions used
      * @param userOperators the custom operators used
      * @param variableNames the variable names used in the expression
-     * @return a {@link net.objecthunter.exp4j.tokenizer.Token} array containing the result
+     * @return a {@link com.example.goo.calculator.calculatorTask.tokenizer.Token} array containing the result
      */
     public static Token[] convertToRPN(final String expression, final Map<String, Function> userFunctions,
-                                       final Map<String, Operator> userOperators, final Set<String> variableNames){
+                                       final Map<String, Operator> userOperators, final Set<String> variableNames) {
         final Stack<Token> stack = new Stack<Token>();
         final List<Token> output = new ArrayList<Token>();
 
@@ -59,7 +60,7 @@ public class ShuntingYard {
                         } else if ((o1.getOperator().isLeftAssociative() && o1.getOperator().getPrecedence() <= o2.getOperator().getPrecedence())
                                 || (o1.getOperator().getPrecedence() < o2.getOperator().getPrecedence())) {
                             output.add(stack.pop());
-                        }else {
+                        } else {
                             break;
                         }
                     }

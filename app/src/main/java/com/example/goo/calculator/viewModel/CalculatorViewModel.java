@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.goo.calculator.model.CalculatorModel;
-import com.example.goo.calculator.Repository.CalculatorRepository;
+import com.example.goo.calculator.repository.CalculatorRepository;
 
 import static android.content.ContentValues.TAG;
 

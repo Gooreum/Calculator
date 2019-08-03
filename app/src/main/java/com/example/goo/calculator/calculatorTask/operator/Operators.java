@@ -1,10 +1,14 @@
 package com.example.goo.calculator.calculatorTask.operator;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Created by Goo on 2019-08-03.
  */
 
 public abstract class Operators {
+    public static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
     private static final int INDEX_ADDITION = 0;
     private static final int INDEX_SUBTRACTION = 1;
     private static final int INDEX_MUTLIPLICATION = 2;
@@ -17,74 +21,74 @@ public abstract class Operators {
     private static final Operator[] builtinOperators = new Operator[8];
 
     static {
-        builtinOperators[INDEX_ADDITION]= new Operator("+", 2, true, Operator.PRECEDENCE_ADDITION) {
+        builtinOperators[INDEX_ADDITION] = new Operator("+", 2, true, Operator.PRECEDENCE_ADDITION) {
             @Override
-            public double apply(final double... args) {
-                return args[0] + args[1];
+            public BigDecimal apply(BigDecimal... args) {
+                return args[0].add(args[1]);
             }
         };
-        builtinOperators[INDEX_SUBTRACTION]= new Operator("-", 2, true, Operator.PRECEDENCE_ADDITION) {
+        builtinOperators[INDEX_SUBTRACTION] = new Operator("-", 2, true, Operator.PRECEDENCE_ADDITION) {
             @Override
-            public double apply(final double... args) {
-                return args[0] - args[1];
+            public BigDecimal apply(final BigDecimal... args) {
+                return args[0].subtract(args[1]);
             }
         };
-        builtinOperators[INDEX_UNARYMINUS]= new Operator("-", 1, false, Operator.PRECEDENCE_UNARY_MINUS) {
+        builtinOperators[INDEX_UNARYMINUS] = new Operator("-", 1, false, Operator.PRECEDENCE_UNARY_MINUS) {
             @Override
-            public double apply(final double... args) {
-                return -args[0];
+            public BigDecimal apply(final BigDecimal... args) {
+                return args[0].negate();
             }
         };
-        builtinOperators[INDEX_UNARYPLUS]= new Operator("+", 1, false, Operator.PRECEDENCE_UNARY_PLUS) {
+        builtinOperators[INDEX_UNARYPLUS] = new Operator("+", 1, false, Operator.PRECEDENCE_UNARY_PLUS) {
             @Override
-            public double apply(final double... args) {
-                return args[0];
+            public BigDecimal apply(final BigDecimal... args) {
+                return args[0].abs();
             }
         };
-        builtinOperators[INDEX_MUTLIPLICATION]= new Operator("*", 2, true, Operator.PRECEDENCE_MULTIPLICATION) {
+        builtinOperators[INDEX_MUTLIPLICATION] = new Operator("*", 2, true, Operator.PRECEDENCE_MULTIPLICATION) {
             @Override
-            public double apply(final double... args) {
-                return args[0] * args[1];
+            public BigDecimal apply(final BigDecimal... args) {
+                return args[0].multiply(args[1]);
             }
         };
-        builtinOperators[INDEX_DIVISION]= new Operator("/", 2, true, Operator.PRECEDENCE_DIVISION) {
+        builtinOperators[INDEX_DIVISION] = new Operator("/", 2, true, Operator.PRECEDENCE_DIVISION) {
             @Override
-            public double apply(final double... args) {
-                if (args[1] == 0d) {
+            public BigDecimal apply(final BigDecimal... args) {
+                if (args[1].compareTo(BigDecimal.ZERO) == 0) {
                     throw new ArithmeticException("Division by zero!");
                 }
-                return args[0] / args[1];
+                return args[0].divide(args[1],3, RoundingMode.HALF_EVEN);
             }
         };
-        builtinOperators[INDEX_POWER]= new Operator("^", 2, false, Operator.PRECEDENCE_POWER) {
+        builtinOperators[INDEX_POWER] = new Operator("^", 2, false, Operator.PRECEDENCE_POWER) {
             @Override
-            public double apply(final double... args) {
-                return Math.pow(args[0], args[1]);
+            public BigDecimal apply(final BigDecimal... args) {
+                return args[0].pow(args[1].intValue());
             }
         };
-        builtinOperators[INDEX_MODULO]= new Operator("%", 2, true, Operator.PRECEDENCE_MODULO) {
+        builtinOperators[INDEX_MODULO] = new Operator("%", 2, true, Operator.PRECEDENCE_MODULO) {
             @Override
-            public double apply(final double... args) {
-                if (args[1] == 0d) {
+            public BigDecimal apply(final BigDecimal... args) {
+                if (args[1].equals(BigDecimal.ZERO)) {
                     throw new ArithmeticException("Division by zero!");
                 }
-                return args[0] % args[1];
+                return args[0].multiply(args[1]).divide(ONE_HUNDRED);
             }
         };
     }
 
     public static Operator getBuiltinOperator(final char symbol, final int numArguments) {
-        switch(symbol) {
+        switch (symbol) {
             case '+':
                 if (numArguments != 1) {
                     return builtinOperators[INDEX_ADDITION];
-                }else{
+                } else {
                     return builtinOperators[INDEX_UNARYPLUS];
                 }
             case '-':
                 if (numArguments != 1) {
                     return builtinOperators[INDEX_SUBTRACTION];
-                }else{
+                } else {
                     return builtinOperators[INDEX_UNARYMINUS];
                 }
             case '*':

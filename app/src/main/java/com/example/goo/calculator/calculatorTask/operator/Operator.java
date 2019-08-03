@@ -1,5 +1,7 @@
 package com.example.goo.calculator.calculatorTask.operator;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Goo on 2019-08-03.
  */
@@ -42,7 +44,7 @@ public abstract class Operator {
     /**
      * The set of allowed operator chars
      */
-    public static final char[] ALLOWED_OPERATOR_CHARS = { '+', '-', '*', '/',
+    public static final char[] ALLOWED_OPERATOR_CHARS = {'+', '-', '*', '/',
             '%', '^', '!', '#', '§', '$', '&', ';', ':', '~', '<', '>', '|',
             '='};
 
@@ -53,10 +55,11 @@ public abstract class Operator {
 
     /**
      * Create a new operator for use in expressions
-     * @param symbol the symbol of the operator
+     *
+     * @param symbol           the symbol of the operator
      * @param numberOfOperands the number of operands the operator takes (1 or 2)
-     * @param leftAssociative set to true if the operator is left associative, false if it is right associative
-     * @param precedence the precedence value of the operator
+     * @param leftAssociative  set to true if the operator is left associative, false if it is right associative
+     * @param precedence       the precedence value of the operator
      */
     public Operator(String symbol, int numberOfOperands, boolean leftAssociative,
                     int precedence) {
@@ -69,11 +72,12 @@ public abstract class Operator {
 
     /**
      * Check if a character is an allowed operator char
+     *
      * @param ch the char to check
      * @return true if the char is allowed an an operator symbol, false otherwise
      */
     public static boolean isAllowedOperatorChar(char ch) {
-        for (char allowed: ALLOWED_OPERATOR_CHARS) {
+        for (char allowed : ALLOWED_OPERATOR_CHARS) {
             if (ch == allowed) {
                 return true;
             }
@@ -83,6 +87,7 @@ public abstract class Operator {
 
     /**
      * Check if the operator is left associative
+     *
      * @return true os the operator is left associative, false otherwise
      */
     public boolean isLeftAssociative() {
@@ -91,6 +96,7 @@ public abstract class Operator {
 
     /**
      * Check the precedence value for the operator
+     *
      * @return the precedence value
      */
     public int getPrecedence() {
@@ -99,13 +105,15 @@ public abstract class Operator {
 
     /**
      * Apply the operation on the given operands
+     *
      * @param args the operands for the operation
      * @return the calculated result of the operation
      */
-    public abstract double apply(double ... args);
+    public abstract BigDecimal apply(BigDecimal... args);
 
     /**
      * Get the operator symbol
+     *
      * @return the symbol
      */
     public String getSymbol() {
@@ -114,6 +122,7 @@ public abstract class Operator {
 
     /**
      * Get the number of operands
+     *
      * @return the number of operands
      */
     public int getNumOperands() {

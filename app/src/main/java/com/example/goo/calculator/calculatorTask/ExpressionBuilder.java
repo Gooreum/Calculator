@@ -41,23 +41,13 @@ public class ExpressionBuilder {
         this.variableNames = new HashSet<String>(4);
     }
 
-    /**
-     * Add a {@link net.objecthunter.exp4j.function.Function} implementation available for use in the expression
-     *
-     * @param function the custom {@link net.objecthunter.exp4j.function.Function} implementation that should be available for use in the expression.
-     * @return the ExpressionBuilder instance
-     */
+
     public ExpressionBuilder function(Function function) {
         this.userFunctions.put(function.getName(), function);
         return this;
     }
 
-    /**
-     * Add multiple {@link net.objecthunter.exp4j.function.Function} implementations available for use in the expression
-     *
-     * @param functions the custom {@link net.objecthunter.exp4j.function.Function} implementations
-     * @return the ExpressionBuilder instance
-     */
+
     public ExpressionBuilder functions(Function... functions) {
         for (Function f : functions) {
             this.userFunctions.put(f.getName(), f);
@@ -65,12 +55,7 @@ public class ExpressionBuilder {
         return this;
     }
 
-    /**
-     * Add multiple {@link net.objecthunter.exp4j.function.Function} implementations available for use in the expression
-     *
-     * @param functions A {@link java.util.List} of custom {@link net.objecthunter.exp4j.function.Function} implementations
-     * @return the ExpressionBuilder instance
-     */
+
     public ExpressionBuilder functions(List<Function> functions) {
         for (Function f : functions) {
             this.userFunctions.put(f.getName(), f);
@@ -93,12 +78,7 @@ public class ExpressionBuilder {
         return this;
     }
 
-    /**
-     * Add an {@link net.objecthunter.exp4j.operator.Operator} which should be available for use in the expression
-     *
-     * @param operator the custom {@link net.objecthunter.exp4j.operator.Operator} to add
-     * @return the ExpressionBuilder instance
-     */
+
     public ExpressionBuilder operator(Operator operator) {
         this.checkOperatorSymbol(operator);
         this.userOperators.put(operator.getSymbol(), operator);
@@ -114,12 +94,7 @@ public class ExpressionBuilder {
         }
     }
 
-    /**
-     * Add multiple {@link net.objecthunter.exp4j.operator.Operator} implementations which should be available for use in the expression
-     *
-     * @param operators the set of custom {@link net.objecthunter.exp4j.operator.Operator} implementations to add
-     * @return the ExpressionBuilder instance
-     */
+
     public ExpressionBuilder operator(Operator... operators) {
         for (Operator o : operators) {
             this.operator(o);
@@ -127,12 +102,7 @@ public class ExpressionBuilder {
         return this;
     }
 
-    /**
-     * Add multiple {@link net.objecthunter.exp4j.operator.Operator} implementations which should be available for use in the expression
-     *
-     * @param operators the {@link java.util.List} of custom {@link net.objecthunter.exp4j.operator.Operator} implementations to add
-     * @return the ExpressionBuilder instance
-     */
+
     public ExpressionBuilder operator(List<Operator> operators) {
         for (Operator o : operators) {
             this.operator(o);
@@ -140,11 +110,7 @@ public class ExpressionBuilder {
         return this;
     }
 
-    /**
-     * Build the {@link net.objecthunter.exp4j.Expression} instance using the custom operators and functions set.
-     *
-     * @return an {@link net.objecthunter.exp4j.Expression} instance which can be used to evaluate the result of the expression
-     */
+
     public Expression build() {
         if (expression.length() == 0) {
             throw new IllegalArgumentException("The expression can not be empty");
