@@ -47,9 +47,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    compile 'net.objecthunter:exp4j:0.4.4'
+    //compile 'net.objecthunter:exp4j:0.4.4'
 
 
-    //circleImageView
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }

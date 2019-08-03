@@ -20,7 +20,5 @@ public class ActivityCalculator extends AppCompatActivity  {
                 .add(R.id.container_a, new FragmentDisplay())
                 .add(R.id.container_b, new FragmentCalculator())
                 .commit();
-
     }
-
 }

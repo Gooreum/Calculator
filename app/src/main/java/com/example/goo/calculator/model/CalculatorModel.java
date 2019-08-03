@@ -35,8 +35,10 @@ public class CalculatorModel {
     }
 
     public String getOperatingProcess() {
+
         return operatingProcess;
     }
+
     public String getOperatingResult() {
         return operatingResult;
     }
@@ -44,7 +46,6 @@ public class CalculatorModel {
     public boolean isNumber() {
         return isNumber;
     }
-
 
     public boolean isDot() {
         return isDot;

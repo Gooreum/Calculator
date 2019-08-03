@@ -40,7 +40,6 @@ public class FragmentDisplay extends Fragment {
         inputText = v.findViewById(R.id.input);
         resultText = v.findViewById(R.id.result);
 
-        // Hiding and disable keyboard
         inputText.setRawInputType(InputType.TYPE_NULL);
 
         return v;
