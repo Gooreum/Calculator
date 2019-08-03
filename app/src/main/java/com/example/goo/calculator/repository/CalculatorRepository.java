@@ -31,15 +31,7 @@ public class CalculatorRepository {
 
     public void update(CalculatorModel calculatorModel) {
         new UpdateNoteAsyncTask(calculatorDao).execute(calculatorModel);
-        Log.d(TAG, "update: " + calculatorModel.getValue());
-    }
 
-    public void delete(CalculatorModel calculatorModel) {
-        new DeleteNoteAsyncTask(calculatorDao).execute(calculatorModel);
-    }
-
-    public void deleteAllValues() {
-        new DeleteAllNotesAsyncTask(calculatorDao).execute();
     }
 
     public LiveData<CalculatorModel> getAllValues() {
@@ -74,31 +66,4 @@ public class CalculatorRepository {
         }
     }
 
-    private static class DeleteNoteAsyncTask extends AsyncTask<CalculatorModel, Void, Void> {
-        private CalculatorDao calculatorDao;
-
-        private DeleteNoteAsyncTask(CalculatorDao calculatorDao) {
-            this.calculatorDao = calculatorDao;
-        }
-
-        @Override
-        protected Void doInBackground(CalculatorModel... values) {
-            calculatorDao.delete(values[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteAllNotesAsyncTask extends AsyncTask<Void, Void, Void> {
-        private CalculatorDao calculatorDao;
-
-        private DeleteAllNotesAsyncTask(CalculatorDao calculatorDao) {
-            this.calculatorDao = calculatorDao;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            calculatorDao.deleteAllValues();
-            return null;
-        }
-    }
 }

@@ -16,6 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }
 
 dependencies {
@@ -47,5 +49,7 @@ dependencies {
 
     compile 'net.objecthunter:exp4j:0.4.4'
 
-    
+
+    //circleImageView
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }

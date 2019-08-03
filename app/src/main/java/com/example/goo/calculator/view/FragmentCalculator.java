@@ -61,8 +61,8 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     private boolean isNumber;
     private boolean lastDot;
 
-    private StringBuffer values;
-    private StringBuffer resultValue;
+    private StringBuffer operatingProcess;
+    private StringBuffer operatingResult;
 
 
     @Nullable
@@ -79,6 +79,7 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         calculatorViewModel = ViewModelProviders.of(getActivity()).get(CalculatorViewModel.class);
         calculatorViewModel.getAllValues().observe(getActivity(), new Observer<CalculatorModel>() {
             @Override
@@ -86,8 +87,8 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                 calculatorModel = calculModel;
                 if (calculatorModel != null) {
 
-                    values = new StringBuffer(calculatorModel.getValue().toString());
-                    resultValue = new StringBuffer(calculatorModel.getResult().toString());
+                    operatingProcess = new StringBuffer(calculatorModel.getOperatingProcess().toString());
+                    operatingResult = new StringBuffer(calculatorModel.getOperatingResult().toString());
 
                     isNumber = calculatorModel.isNumber();
                     lastDot = calculatorModel.isLastDot();
@@ -95,8 +96,6 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                     Log.d(TAG, "isNumber " + isNumber);
                     Log.d(TAG, "lastDot " + lastDot);
 
-                    Log.d(TAG, "Value객체 값은 ? " + values.getClass().hashCode());
-                    Log.d(TAG, "resultValue객체 값은 ? " + resultValue.getClass().hashCode());
                 } else {
 
                     calculatorModel = new CalculatorModel("", "", false, false);
@@ -165,20 +164,19 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                 append("0");
 
                 updateCalculatorModelIsNumber(true);
-
                 break;
 
             case R.id.btn1:
 
                 append("1");
 
+
                 updateCalculatorModelIsNumber(true);
-
-
                 break;
 
             case R.id.btn2:
                 append("2");
+
 
                 updateCalculatorModelIsNumber(true);
                 break;
@@ -186,43 +184,56 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
             case R.id.btn3:
                 append("3");
 
+
                 updateCalculatorModelIsNumber(true);
                 break;
 
             case R.id.btn4:
                 append("4");
 
+
                 updateCalculatorModelIsNumber(true);
+
                 break;
 
             case R.id.btn5:
                 append("5");
 
+
                 updateCalculatorModelIsNumber(true);
+
                 break;
 
             case R.id.btn6:
                 append("6");
 
+
                 updateCalculatorModelIsNumber(true);
+
                 break;
 
             case R.id.btn7:
                 append("7");
 
+
                 updateCalculatorModelIsNumber(true);
+
                 break;
 
             case R.id.btn8:
                 append("8");
 
+
                 updateCalculatorModelIsNumber(true);
+
                 break;
 
             case R.id.btn9:
                 append("9");
 
+
                 updateCalculatorModelIsNumber(true);
+
                 break;
 
             case R.id.btn100:
@@ -248,7 +259,6 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                 }
                 updateCalculatorModelIsNumber(false);
                 updateCalculatorModelIsDot(false);
-
                 break;
 
             case R.id.btnMin:
@@ -334,76 +344,74 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     }
 
 
-    //연산자로 끝나느지 확인하기
-    private boolean endsWithOperatore() {
-        return getinput().endsWith("+") || getinput().endsWith("-") || getinput().endsWith("\u00F7") || getinput().endsWith("x") || getinput().endsWith("%");
-    }
-
-    //
-    private void replace(String str) {
-
-        values.replace(getinput().length() - 1, getinput().length(), str);
-        updateCalculatorModelValues(values.toString(), resultValue.toString());
-
-    }
-
-    //연산 클리어
-    private void clear() {
-
-        updateCalculatorModelIsNumber(false);
-        updateCalculatorModelIsDot(false);
-
-        values.delete(0, values.length());
-        updateCalculatorModelValues("", "");
-
-    }
-
-    //입력하기
     private void append(String str) {
-        values.append(str);
+        operatingProcess.append(str);
 
         if (!endsWithOperatore()) {
             calcule(false);
         }
-        updateCalculatorModelValues(values.toString(), resultValue.toString());
+        updateCalculatorModelValues(operatingProcess.toString(), operatingResult.toString());
 
-
-        Log.e(TAG, "CalculatorModel: " + calculatorViewModel.getAllValues().getValue().getValue().toString());
+        Log.e(TAG, "CalculatorModel: " + calculatorViewModel.getAllValues().getValue().getOperatingProcess().toString());
 
     }
+
 
     //연산자 혹은 피연산자 값 지우기
     private void delete() {
 
         if (!isEmpty()) {
-            if (getinput().endsWith(".")) {
+            if (getInput().endsWith(".")) {
 
                 updateCalculatorModelIsDot(false);
                 updateCalculatorModelIsNumber(true);
             }
 
-            values.delete(getinput().length() - 1, getinput().length());
-            updateCalculatorModelValues(values.toString(), resultValue.toString());
+            operatingProcess.delete(getInput().length() - 1, getInput().length());
+            updateCalculatorModelValues(operatingProcess.toString(), operatingResult.toString());
+
             calcule(false);
 
         } else clear();
 
     }
 
+    private void replace(String str) {
 
-    private String getinput() {
+        operatingProcess.replace(getInput().length() - 1, getInput().length(), str);
+        updateCalculatorModelValues(operatingProcess.toString(), operatingResult.toString());
 
-        return values.toString();
+    }
+
+
+    private void clear() {
+
+        updateCalculatorModelIsNumber(false);
+        updateCalculatorModelIsDot(false);
+
+        operatingProcess.delete(0, operatingProcess.length());
+        updateCalculatorModelValues("", "");
+
+    }
+
+    private boolean endsWithOperatore() {
+        return getInput().endsWith("+") || getInput().endsWith("-") || getInput().endsWith("\u00F7") || getInput().endsWith("x") || getInput().endsWith("%");
+    }
+
+
+    private String getInput() {
+
+        return operatingProcess.toString();
     }
 
     private boolean isEmpty() {
-        return getinput().isEmpty();
+        return getInput().isEmpty();
     }
 
     //계산하기
-    protected void calcule(boolean isequlclick) {
+    protected void calcule(boolean isEqulClick) {
 
-        String input = getinput();
+        String input = getInput();
         try {
             if (!isEmpty() && !endsWithOperatore()) {
 
@@ -428,43 +436,50 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
 
                 }
 
-                if (isequlclick) {
+                if (isEqulClick) {
 
-                    values.delete(0, values.length());
-                    values.append(result.toPlainString());
+                    operatingProcess.delete(0, operatingProcess.length());
+                    operatingProcess.append(result.toPlainString());
 
-                    resultValue.delete(0, resultValue.length());
-                    resultValue.append("");
+                    operatingResult.delete(0, operatingResult.length());
+                    operatingResult.append("");
 
-                    updateCalculatorModelValues(values.toString(), resultValue.toString());
+                    updateCalculatorModelValues(operatingProcess.toString(), operatingResult.toString());
 
                     if (!result.toPlainString().contains(".")) {
+
                         updateCalculatorModelIsNumber(true);
                         updateCalculatorModelIsDot(false);
 
+
                     } else if (result.toPlainString().contains(".")) {
+
                         updateCalculatorModelIsNumber(true);
                         updateCalculatorModelIsDot(true);
 
                     } else {
+
                         updateCalculatorModelIsNumber(isNumber);
                         updateCalculatorModelIsDot(lastDot);
+
                     }
 
 
                 } else {
 
-                    resultValue.delete(0, resultValue.length());
-                    resultValue.append(result.toPlainString());
-                    updateCalculatorModelValues(values.toString(), resultValue.toString());
+                    operatingResult.delete(0, operatingResult.length());
+                    operatingResult.append(result.toPlainString());
+                    updateCalculatorModelValues(operatingProcess.toString(), operatingResult.toString());
+
                 }
 
 
             } else {
 
-                resultValue.delete(0, resultValue.length());
-                resultValue.append("");
-                updateCalculatorModelValues(values.toString(), resultValue.toString());
+                operatingResult.delete(0, operatingResult.length());
+                operatingResult.append("");
+                updateCalculatorModelValues(operatingProcess.toString(), operatingResult.toString());
+
             }
 
         } catch (Exception e) {
@@ -476,10 +491,10 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     }
 
 
-    public void updateCalculatorModelValues(String value, String result) {
+    public void updateCalculatorModelValues(String operatingProcess, String operatingResult) {
 
-        calculatorModel.setValue(value);
-        calculatorModel.setResult(result);
+        calculatorModel.setOperatingProcess(operatingProcess);
+        calculatorModel.setOperatingResult(operatingResult);
         calculatorModel.setId(1);
         calculatorViewModel.update(calculatorModel);
 

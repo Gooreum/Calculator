@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
 
     <EditText
@@ -12,7 +14,11 @@
         android:layout_alignParentTop="true"
         android:background="@color/input_backg_color"
         android:inputType="none"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
         android:textAlignment="textEnd"
+
         android:textSize="30sp" />
 
     <TextView
@@ -20,9 +26,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/input_backg_color"
+        android:layout_marginBottom="5dp"
+        android:background="#F4F7F7"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+
         android:textAlignment="textEnd"
-        android:textSize="18sp" />
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+
+        />
 
 
 </RelativeLayout>

@@ -19,6 +19,7 @@ public class CalculatorViewModel extends AndroidViewModel {
     private CalculatorRepository repository;
     private LiveData<CalculatorModel> allValues;
 
+
     public CalculatorViewModel(@NonNull Application application) {
         super(application);
         repository = new CalculatorRepository(application);
@@ -30,16 +31,8 @@ public class CalculatorViewModel extends AndroidViewModel {
     }
 
     public void update(CalculatorModel values) {
-        Log.d(TAG, "update:" + values.getValue());
+        Log.d(TAG, "update:" + values.getOperatingProcess());
         repository.update(values);
-    }
-
-    public void delete(CalculatorModel values) {
-        repository.delete(values);
-    }
-
-    public void deleteAllValues() {
-        repository.deleteAllValues();
     }
 
     public LiveData<CalculatorModel> getAllValues() {

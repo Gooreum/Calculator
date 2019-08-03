@@ -2,6 +2,7 @@ package com.example.goo.calculator.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,21 +28,20 @@ import static android.content.ContentValues.TAG;
 public class FragmentDisplay extends Fragment {
 
     private CalculatorViewModel calculatorViewModel;
-    EditText inputtext;
-    TextView resulttext;
+    EditText inputText;
+    TextView resultText;
     CalculatorModel calculatorModel;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_display, container, false);
 
-        inputtext = v.findViewById(R.id.input);
-        resulttext = v.findViewById(R.id.result);
+        inputText = v.findViewById(R.id.input);
+        resultText = v.findViewById(R.id.result);
 
         // Hiding and disable keyboard
-        inputtext.setRawInputType(InputType.TYPE_NULL);
+        inputText.setRawInputType(InputType.TYPE_NULL);
 
         return v;
     }
@@ -57,11 +57,12 @@ public class FragmentDisplay extends Fragment {
                 calculatorModel = calculModel;
                 if (calculatorModel != null) {
 
-                    Log.e(TAG, "Display  CalculatorModel: " + calculatorViewModel.getAllValues().getValue().getValue().toString());
-                    Log.e(TAG, "Display  CalculatorModel ID: " + calculatorViewModel.getAllValues().getValue().getId());
-                    Log.e(TAG, "Display  ResultValue : " + calculatorViewModel.getAllValues().getValue().getResult().toString());
-                    inputtext.setText(calculatorModel.getValue().toString());
-                    resulttext.setText(calculatorModel.getResult().toString());
+                    Log.e(TAG, "Display  CalculatorModel: " +calculatorModel.getOperatingProcess().toString());
+                    Log.e(TAG, "Display  CalculatorModel ID: " + calculatorModel.getId());
+                    Log.e(TAG, "Display  ResultValue : " + calculatorModel.getOperatingResult().toString());
+
+                   inputText.setText(calculatorModel.getOperatingProcess().toString());
+                    resultText.setText(calculatorModel.getOperatingResult().toString());
 
 
                 }

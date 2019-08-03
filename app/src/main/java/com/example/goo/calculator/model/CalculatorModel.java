@@ -13,16 +13,15 @@ public class CalculatorModel {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String value;
-    private String result;
+    private String operatingProcess;
+    private String operatingResult;
 
     private boolean isNumber;
     private boolean lastDot;
 
-    public CalculatorModel(String value, String result, boolean isNumber, boolean lastDot) {
-        this.value = value;
-        this.result = result;
-
+    public CalculatorModel(String operatingProcess, String operatingResult, boolean isNumber, boolean lastDot) {
+        this.operatingProcess = operatingProcess;
+        this.operatingResult = operatingResult;
         this.isNumber = isNumber;
         this.lastDot = lastDot;
     }
@@ -35,20 +34,21 @@ public class CalculatorModel {
         return id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setOperatingProcess(String operatingProcess) {
+        this.operatingProcess = operatingProcess;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public String getOperatingProcess() {
+        return operatingProcess;
     }
 
-    public String getValue() {
-        return value;
+    public void setOperatingResult(String operatingResult) {
+        this.operatingResult = operatingResult;
     }
 
-    public String getResult() {
-        return result;
+
+    public String getOperatingResult() {
+        return operatingResult;
     }
 
     public boolean isNumber() {
@@ -63,6 +63,7 @@ public class CalculatorModel {
     public boolean isLastDot() {
         return lastDot;
     }
+
     public void setLastDot(boolean lastDot) {
         this.lastDot = lastDot;
     }

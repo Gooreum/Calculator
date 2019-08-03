@@ -19,11 +19,6 @@ public interface CalculatorDao {
     @Update
     void update(CalculatorModel note);
 
-    @Delete
-    void delete(CalculatorModel note);
-
-    @Query("DELETE FROM calculator_table")
-    void deleteAllValues();
 
     @Query("SELECT * FROM calculator_table ")
     LiveData<CalculatorModel> getAllValues();
