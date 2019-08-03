@@ -35,6 +35,9 @@ public class CalculatorViewModel extends AndroidViewModel {
         repository.update(values);
     }
 
+
+
+
     public LiveData<CalculatorModel> getAllValues() {
         return allValues;
     }

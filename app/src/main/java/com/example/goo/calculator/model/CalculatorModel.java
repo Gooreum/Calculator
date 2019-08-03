@@ -17,13 +17,13 @@ public class CalculatorModel {
     private String operatingResult;
 
     private boolean isNumber;
-    private boolean lastDot;
+    private boolean isDot;
 
-    public CalculatorModel(String operatingProcess, String operatingResult, boolean isNumber, boolean lastDot) {
+    public CalculatorModel(String operatingProcess, String operatingResult, boolean isNumber, boolean isDot) {
         this.operatingProcess = operatingProcess;
         this.operatingResult = operatingResult;
         this.isNumber = isNumber;
-        this.lastDot = lastDot;
+        this.isDot = isDot;
     }
 
     public void setId(int id) {
@@ -34,19 +34,9 @@ public class CalculatorModel {
         return id;
     }
 
-    public void setOperatingProcess(String operatingProcess) {
-        this.operatingProcess = operatingProcess;
-    }
-
     public String getOperatingProcess() {
         return operatingProcess;
     }
-
-    public void setOperatingResult(String operatingResult) {
-        this.operatingResult = operatingResult;
-    }
-
-
     public String getOperatingResult() {
         return operatingResult;
     }
@@ -55,17 +45,10 @@ public class CalculatorModel {
         return isNumber;
     }
 
-    public void setNumber(boolean isNumber) {
-        this.isNumber = isNumber;
+
+    public boolean isDot() {
+        return isDot;
     }
 
-
-    public boolean isLastDot() {
-        return lastDot;
-    }
-
-    public void setLastDot(boolean lastDot) {
-        this.lastDot = lastDot;
-    }
 
 }

@@ -19,7 +19,6 @@ public interface CalculatorDao {
     @Update
     void update(CalculatorModel note);
 
-
     @Query("SELECT * FROM calculator_table ")
     LiveData<CalculatorModel> getAllValues();
 }

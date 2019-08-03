@@ -53,18 +53,16 @@ public class FragmentDisplay extends Fragment {
         calculatorViewModel.getAllValues().observe(getActivity(), new Observer<CalculatorModel>() {
             @Override
             public void onChanged(@Nullable CalculatorModel calculModel) {
-                //Toast.makeText(getContext(), "sibal", Toast.LENGTH_SHORT).show();
+
                 calculatorModel = calculModel;
                 if (calculatorModel != null) {
 
-                    Log.e(TAG, "Display  CalculatorModel: " +calculatorModel.getOperatingProcess().toString());
-                    Log.e(TAG, "Display  CalculatorModel ID: " + calculatorModel.getId());
-                    Log.e(TAG, "Display  ResultValue : " + calculatorModel.getOperatingResult().toString());
-
-                   inputText.setText(calculatorModel.getOperatingProcess().toString());
-                    resultText.setText(calculatorModel.getOperatingResult().toString());
+                    Log.e(TAG, "Display  CalculatorModel: " + calculatorViewModel.getAllValues().getValue().getOperatingProcess().toString());
+                    Log.e(TAG, "Display  ResultValue : " + calculatorViewModel.getAllValues().getValue().getOperatingResult().toString());
 
 
+                    inputText.setText(calculatorViewModel.getAllValues().getValue().getOperatingProcess().toString());
+                    resultText.setText(calculatorViewModel.getAllValues().getValue().getOperatingResult().toString());
                 }
 
             }

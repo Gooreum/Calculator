@@ -59,7 +59,7 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
 
 
     private boolean isNumber;
-    private boolean lastDot;
+    private boolean isDot;
 
     private StringBuffer operatingProcess;
     private StringBuffer operatingResult;
@@ -85,16 +85,16 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
             @Override
             public void onChanged(@Nullable CalculatorModel calculModel) {
                 calculatorModel = calculModel;
-                if (calculatorModel != null) {
+                if (calculModel != null) {
 
-                    operatingProcess = new StringBuffer(calculatorModel.getOperatingProcess().toString());
-                    operatingResult = new StringBuffer(calculatorModel.getOperatingResult().toString());
+                    operatingProcess = new StringBuffer(calculatorViewModel.getAllValues().getValue().getOperatingProcess().toString());
+                    operatingResult = new StringBuffer(calculatorViewModel.getAllValues().getValue().getOperatingResult().toString());
 
-                    isNumber = calculatorModel.isNumber();
-                    lastDot = calculatorModel.isLastDot();
+                    isNumber = calculatorViewModel.getAllValues().getValue().isNumber();
+                    isDot = calculatorViewModel.getAllValues().getValue().isDot();
 
                     Log.d(TAG, "isNumber " + isNumber);
-                    Log.d(TAG, "lastDot " + lastDot);
+                    Log.d(TAG, "isDot " + isDot);
 
                 } else {
 
@@ -161,82 +161,86 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
         int Id = v.getId();
         switch (Id) {
             case R.id.btn0:
+
                 append("0");
 
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
+
                 break;
 
             case R.id.btn1:
 
                 append("1");
 
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
-                updateCalculatorViewModelIsNumber(true);
                 break;
 
             case R.id.btn2:
+
                 append("2");
 
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
-                updateCalculatorViewModelIsNumber(true);
                 break;
 
             case R.id.btn3:
+
                 append("3");
 
-
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
                 break;
 
             case R.id.btn4:
+
                 append("4");
 
-
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
                 break;
 
             case R.id.btn5:
+
                 append("5");
 
-
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
                 break;
 
             case R.id.btn6:
+
                 append("6");
 
-
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
                 break;
 
             case R.id.btn7:
+
                 append("7");
 
-
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
                 break;
 
             case R.id.btn8:
+
                 append("8");
 
-
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
                 break;
 
             case R.id.btn9:
+
                 append("9");
 
-
-                updateCalculatorViewModelIsNumber(true);
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, isDot);
 
                 break;
 
             case R.id.btn100:
+
                 if (!isEmpty()) {
                     if (endsWithOperatore()) {
                         replace("%");
@@ -244,12 +248,13 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                         append("%");
                     }
                 }
-                updateCalculatorViewModelIsNumber(false);
-                updateCalculatorViewModelIsDot(false);
+
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, false);
 
                 break;
 
             case R.id.btnAdd:
+
                 if (!isEmpty()) {
                     if (endsWithOperatore()) {
                         replace("+");
@@ -257,11 +262,13 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                         append("+");
                     }
                 }
-                updateCalculatorViewModelIsNumber(false);
-                updateCalculatorViewModelIsDot(false);
+
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, false);
+
                 break;
 
             case R.id.btnMin:
+
                 if (!isEmpty()) {
                     if (endsWithOperatore()) {
                         replace("-");
@@ -269,8 +276,8 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                         append("-");
                     }
                 }
-                updateCalculatorViewModelIsNumber(false);
-                updateCalculatorViewModelIsDot(false);
+
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, false);
 
                 break;
 
@@ -283,8 +290,8 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                         append("x");
                     }
                 }
-                updateCalculatorViewModelIsNumber(false);
-                updateCalculatorViewModelIsDot(false);
+
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, false);
 
                 break;
 
@@ -297,24 +304,25 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                         append("\u00F7");
                     }
                 }
-                updateCalculatorViewModelIsNumber(false);
-                updateCalculatorViewModelIsDot(false);
+
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, false);
 
                 break;
 
             case R.id.btnDot:
 
 
-                if (isNumber && !lastDot) {
+                if (isNumber && !isDot) {
+
                     append(".");
-                    updateCalculatorViewModelIsNumber(false);
-                    updateCalculatorViewModelIsDot(true);
+
+                    updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, true);
 
                 } else if (isEmpty() || endsWithOperatore()) {
-                    append("0.");
-                    updateCalculatorViewModelIsNumber(false);
-                    updateCalculatorViewModelIsDot(true);
 
+                    append("0.");
+
+                    updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, true);
                 }
 
                 break;
@@ -328,6 +336,7 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
             case R.id.btnAllClear:
 
                 clear();
+
                 break;
 
             case R.id.btnEqual:
@@ -350,8 +359,8 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
         if (!endsWithOperatore()) {
             calcule(false);
         }
-        updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString());
 
+        updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), isNumber, isDot);
         Log.e(TAG, "CalculatorModel: " + calculatorViewModel.getAllValues().getValue().getOperatingProcess().toString());
 
     }
@@ -363,14 +372,16 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
         if (!isEmpty()) {
             if (getInput().endsWith(".")) {
 
-                updateCalculatorViewModelIsDot(false);
-                updateCalculatorViewModelIsNumber(true);
+                operatingProcess.delete(getInput().length() - 1, getInput().length());
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, false);
+
+            } else {
+
+                operatingProcess.delete(getInput().length() - 1, getInput().length());
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), isNumber, isDot);
+                calcule(false);
             }
 
-            operatingProcess.delete(getInput().length() - 1, getInput().length());
-            updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString());
-
-            calcule(false);
 
         } else clear();
 
@@ -379,18 +390,15 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     private void replace(String str) {
 
         operatingProcess.replace(getInput().length() - 1, getInput().length(), str);
-        updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString());
+        updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), isNumber, isDot);
 
     }
 
 
     private void clear() {
 
-        updateCalculatorViewModelIsNumber(false);
-        updateCalculatorViewModelIsDot(false);
-
         operatingProcess.delete(0, operatingProcess.length());
-        updateCalculatorViewModelValues("", "");
+        updateCalculatorViewModelValues("", "", false, false);
 
     }
 
@@ -402,6 +410,7 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
     private String getInput() {
 
         return operatingProcess.toString();
+
     }
 
     private boolean isEmpty() {
@@ -444,24 +453,21 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
                     operatingResult.delete(0, operatingResult.length());
                     operatingResult.append("");
 
-                    updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString());
 
+                    updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), isNumber, isDot);
                     if (!result.toPlainString().contains(".")) {
 
-                        updateCalculatorViewModelIsNumber(true);
-                        updateCalculatorViewModelIsDot(false);
 
+                        updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, false);
 
                     } else if (result.toPlainString().contains(".")) {
 
-                        updateCalculatorViewModelIsNumber(true);
-                        updateCalculatorViewModelIsDot(true);
 
+                        updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), true, true);
                     } else {
 
-                        updateCalculatorViewModelIsNumber(isNumber);
-                        updateCalculatorViewModelIsDot(lastDot);
 
+                        updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), isNumber, isDot);
                     }
 
 
@@ -469,8 +475,8 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
 
                     operatingResult.delete(0, operatingResult.length());
                     operatingResult.append(result.toPlainString());
-                    updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString());
 
+                    updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), isNumber, isDot);
                 }
 
 
@@ -478,39 +484,26 @@ public class FragmentCalculator extends Fragment implements View.OnClickListener
 
                 operatingResult.delete(0, operatingResult.length());
                 operatingResult.append("");
-                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString());
 
+                updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), isNumber, isDot);
             }
 
         } catch (Exception e) {
 
-            updateCalculatorViewModelIsNumber(false);
 
+            updateCalculatorViewModelValues(operatingProcess.toString(), operatingResult.toString(), false, isDot);
 
         }
     }
 
+    public void updateCalculatorViewModelValues(String operatingProcess, String operatingResult, boolean isNumber, boolean isDot) {
 
-    public void updateCalculatorViewModelValues(String operatingProcess, String operatingResult) {
-
-        calculatorModel.setOperatingProcess(operatingProcess);
-        calculatorModel.setOperatingResult(operatingResult);
+        calculatorModel = new CalculatorModel(operatingProcess, operatingResult, isNumber, isDot);
         calculatorModel.setId(1);
         calculatorViewModel.update(calculatorModel);
 
     }
 
-    public void updateCalculatorViewModelIsNumber(boolean isNumber) {
-        calculatorModel.setNumber(isNumber);
-        calculatorModel.setId(1);
-        calculatorViewModel.update(calculatorModel);
-    }
 
-
-    public void updateCalculatorViewModelIsDot(boolean lastDot) {
-        calculatorModel.setLastDot(lastDot);
-        calculatorModel.setId(1);
-        calculatorViewModel.update(calculatorModel);
-    }
 }
 
